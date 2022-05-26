@@ -48,6 +48,8 @@ namespace Ejercicoentregable
         {
             int Total = evento.CantidadComputadoras + evento.CantidadMonitores;
             Console.WriteLine("en el deposito hay" + evento.CantidadComputadoras, "computadoras y " + evento.CantidadMonitores, "monitores, siendo el porcentaje de computadoras" + evento.CantidadComputadoras*100/Total , "y el de pantallas" +evento.CantidadMonitores*100/Total);
+
+            //PARA CONCATENAR USAR $"TEXTO FIJO {VARIABLE}"
         }
 }
 }

@@ -8,12 +8,15 @@ using Eventos;
 
 namespace logica
 {
-    
+
     public sealed class Principal
     {
         public List<Pantalla> pantallas = new List<Pantalla>();
         public List<Computadora> computadoras = new List<Computadora>();
         List<Elemento> Elementos = new List<Elemento>();
+
+        //PUEDE SER UNA SOLA LISTA DE ELEMENTOS, QUE CONTENGA OBJETOS PANTALLAS Y COMPUTADORAS 
+
         public EventHandler<Eventos.Evento> ElementoAgregadoOEliminado;
         public static Principal Instance = null;
         private Principal()
@@ -29,32 +32,32 @@ namespace logica
                 return Instance;
             }
         }
-       
-        public void AgregarElemento(string marca, string modelo, int NumerodeSerie,string DescripcionProcesador, int CantidadMemoriaRam, string NombreFabricante, int Id )
+
+        public void AgregarElemento(string marca, string modelo, int NumerodeSerie, string DescripcionProcesador, int CantidadMemoriaRam, string NombreFabricante, int Id)
         {
             int CantidadComputadoras = computadoras.Count;
             computadoras.Add(new Computadora(marca, modelo, NumerodeSerie, Id, DescripcionProcesador, CantidadMemoriaRam, NombreFabricante, ));
             LanzarEvento(ListaOrdenada(), "$ agregado ", computadoras.Count, pantallas.Count);
-          
+
         }
 
-        public void AgregarElemento(string marca, string modelo, int NumerodeSerie,int anioFabricacion, int Pulgadas)
+        public void AgregarElemento(string marca, string modelo, int NumerodeSerie, int anioFabricacion, int Pulgadas)
         {
             pantallas.Add(new Pantalla(marca, modelo, NumerodeSerie, anioFabricacion, Pulgadas));
             LanzarEvento(ListaOrdenada(), "$ agregado ", computadoras.Count, pantallas.Count);
         }
-       
+
         public Elemento BuscarElementoPorId(int Id)
         {
             foreach (var item in Elementos)
             {
                 if (item.Id == Id)
                     return item;
-               
+
             }
             return null;
         }
-       public void EliminarElemento(int Id)
+        public void EliminarElemento(int Id)
         {
             Elemento elementoABuscar = BuscarElementoPorId(Id);
             foreach (var item in Elementos)
@@ -68,9 +71,9 @@ namespace logica
                     if (pantallas.Find(x => x.Id == elementoABuscar.Id) != null)
                         Elementos.Remove(elementoABuscar);
                     pantallas.Remove(pantallas.Find(x => x.Id == elementoABuscar.Id));
- 
+
                 }
-                LanzarEvento (ListaOrdenada(), null, computadoras.Count, pantallas.Count);
+                LanzarEvento(ListaOrdenada(), null, computadoras.Count, pantallas.Count);
             }
         }
         public List<string> ListaOrdenada()
@@ -79,17 +82,23 @@ namespace logica
             foreach (var item in Elementos)
             {
                 listaCompleta.Add(item.DescripcionPorTipo());
-                
+
             }
             return listaCompleta;
         }
-      
+
 
         private void LanzarEvento(List<string> DescripcionProductos, string mensaje, int cantidadpantallas, int cantidadcomputadoras)
         {
-            if(ElementoAgregadoOEliminado!=null)
-            this.ElementoAgregadoOEliminado(this, new Evento() { DescripcionProductos = DescripcionProductos, CantidadMonitores=cantidadpantallas, CantidadComputadoras=cantidadcomputadoras, Mensaje=mensaje }) ;
+            if (ElementoAgregadoOEliminado != null)
+                this.ElementoAgregadoOEliminado(this, new Evento()
+                {
+                    DescripcionProductos = DescripcionProductos,
+                    CantidadMonitores = cantidadpantallas,
+                    CantidadComputadoras = cantidadcomputadoras,
+                    Mensaje = mensaje
+                });
         }
 
-}
+    }
 }
